@@ -16,6 +16,7 @@ enum LangCode {
   const LangCode(this.code, this.displayName);
   final String code;
   final String displayName;
+  //국기 이미지 경로 추가 필요
 
   factory LangCode.getByCode(String code) {
     return LangCode.values
@@ -25,19 +26,19 @@ enum LangCode {
 
 class Quiz {
   final LangCode langCode;
-  final String quiz;
+  final String question;
   final String answer;
 
   const Quiz({
     required this.langCode,
-    required this.quiz,
+    required this.question,
     required this.answer,
   });
 
   factory Quiz.fromJson(Map<String, dynamic> json) {
     return Quiz(
       langCode: LangCode.getByCode(json['langCode']),
-      quiz: json['quiz'] as String,
+      question: json['quiz'] as String,
       answer: json['answer'] as String,
     );
   }
