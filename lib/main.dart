@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:what_lang/models/quiz_model.dart';
 import 'package:what_lang/screens/my_info_screen.dart';
 import 'package:what_lang/screens/quiz_list_screen.dart';
 import 'package:what_lang/screens/quiz_screen.dart';
@@ -8,8 +9,9 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
   static const String _title = 'What_Lang?';
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
@@ -21,12 +23,12 @@ class MyApp extends StatelessWidget {
 
 class TabView extends StatefulWidget {
   const TabView({super.key});
-
   @override
   State<TabView> createState() => _TabViewState();
 }
 
 class _TabViewState extends State<TabView> with TickerProviderStateMixin {
+  final List<Quiz> quizList = List.empty(growable: true);
   late TabController _tabController;
   int _index = 0;
 
@@ -36,6 +38,11 @@ class _TabViewState extends State<TabView> with TickerProviderStateMixin {
 
     _tabController = TabController(length: _navItems.length, vsync: this);
     _tabController.addListener(tabListener);
+
+    quizList.add(const Quiz(
+        langCode: LangCode.en, question: "question1", answer: "answer1"));
+    quizList.add(const Quiz(
+        langCode: LangCode.en, question: "question2", answer: "answer2"));
   }
 
   @override
@@ -84,7 +91,13 @@ class _TabViewState extends State<TabView> with TickerProviderStateMixin {
       body: TabBarView(
         physics: const NeverScrollableScrollPhysics(),
         controller: _tabController,
-        children: const [QuizWidget(), QuizListWidget(), MyInfoWidget()],
+        children: [
+          const QuizWidget(),
+          QuizListWidget(
+            quizList: quizList,
+          ),
+          const MyInfoWidget()
+        ],
       ),
     );
   }

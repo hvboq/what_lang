@@ -6,23 +6,21 @@ class QuizListItem extends StatelessWidget {
 
   const QuizListItem({Key? key, required this.inputQuiz}) : super(key: key);
 
+  //정렬 한번 더 고민해볼 것
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
-        leading: const Icon(Icons.flag), //추후 국기로 수정
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Text(
-              inputQuiz.quiz,
-              style: const TextStyle(
-                  color: Colors.black, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              inputQuiz.answer,
-              style: const TextStyle(color: Colors.grey),
-            )
-          ],
-        ));
+      leading: const Icon(Icons.flag), //추후 국기로 수정
+      title: Text(
+        inputQuiz.question,
+        style:
+            const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+      ),
+      subtitle: Text(
+        inputQuiz.answer,
+        style: const TextStyle(color: Colors.grey),
+      ),
+    );
   }
 }
