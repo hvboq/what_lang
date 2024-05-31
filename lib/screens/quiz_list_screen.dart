@@ -16,7 +16,7 @@ class _QuizListWidgetState extends State<QuizListWidget> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () => itemEvent(context, null),
+        onPressed: () => itemEvent(context, null, null),
       ),
       body: widget.quizList!.isEmpty
           ? const Center(
@@ -25,13 +25,17 @@ class _QuizListWidgetState extends State<QuizListWidget> {
           : ListView.builder(
               itemCount: widget.quizList!.length,
               itemBuilder: (context, index) {
-                return QuizListItem(inputQuiz: widget.quizList![index]);
+                return QuizListItem(
+                  inputQuiz: widget.quizList![index],
+                  index: index,
+                  onTap: itemEvent,
+                );
               }),
     );
   }
 
 // 플로팅 액션 버튼 클릭 이벤트
-  Future<void> itemEvent(BuildContext context, Quiz? originalQuiz) {
+  Future<void> itemEvent(BuildContext context, Quiz? originalQuiz, int? index) {
     // 플로팅 액션 버튼을 이용하여 항목을 추가할 제목과 내용
     final TextEditingController questionController = TextEditingController();
     final TextEditingController answerController = TextEditingController();
@@ -49,7 +53,9 @@ class _QuizListWidgetState extends State<QuizListWidget> {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setDialogState) {
             return AlertDialog(
-              title: const Text('퀴즈 추가하기'),
+              title: originalQuiz == null
+                  ? const Text('퀴즈 추가하기')
+                  : const Text('퀴즈 수정하기'),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
@@ -84,12 +90,21 @@ class _QuizListWidgetState extends State<QuizListWidget> {
                   },
                 ),
                 TextButton(
-                  child: const Text('추가'),
+                  child: originalQuiz == null
+                      ? const Text('추가')
+                      : const Text('수정'),
                   onPressed: () {
-                    setState(() => widget.quizList!.add(Quiz(
+                    Quiz newQuiz = Quiz(
                         langCode: langCode,
                         question: questionController.text,
-                        answer: answerController.text)));
+                        answer: answerController.text);
+
+                    setState(() => originalQuiz == null
+                        ? widget.quizList!.add(newQuiz)
+                        : {
+                            widget.quizList!.removeAt(index!),
+                            widget.quizList!.insert(index, newQuiz)
+                          });
                     Navigator.of(context).pop();
                   },
                 ),
