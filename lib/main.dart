@@ -38,11 +38,6 @@ class _TabViewState extends State<TabView> with TickerProviderStateMixin {
 
     _tabController = TabController(length: _navItems.length, vsync: this);
     _tabController.addListener(tabListener);
-
-    quizList.add(const Quiz(
-        langCode: LangCode.en, question: "question1", answer: "answer1"));
-    quizList.add(const Quiz(
-        langCode: LangCode.en, question: "question2", answer: "answer2"));
   }
 
   @override
