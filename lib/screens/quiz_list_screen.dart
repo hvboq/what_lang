@@ -3,7 +3,7 @@ import 'package:what_lang/models/quiz_model.dart';
 import 'package:what_lang/widgets/quiz_list_item.dart';
 
 class QuizListWidget extends StatefulWidget {
-  final List<Quiz>? quizList;
+  final List<Quiz> quizList;
   const QuizListWidget({required this.quizList, super.key});
 
   @override
@@ -18,23 +18,24 @@ class _QuizListWidgetState extends State<QuizListWidget> {
         child: const Icon(Icons.add),
         onPressed: () => itemEvent(context, null, null),
       ),
-      body: widget.quizList!.isEmpty
+      body: widget.quizList.isEmpty
           ? const Center(
               child: Text("퀴즈가 없어용 만들어주세용"),
             )
           : ListView.builder(
-              itemCount: widget.quizList!.length,
+              itemCount: widget.quizList.length,
               itemBuilder: (context, index) {
                 return QuizListItem(
                   inputQuiz: widget.quizList![index],
                   index: index,
                   onTap: itemEvent,
+                  deleteItem: widget.quizList.removeAt,
                 );
               }),
     );
   }
 
-// 플로팅 액션 버튼 클릭 이벤트
+// 플로팅 액션 버튼 클릭 이벤트, 아이템 클릭 이벤트
   Future<void> itemEvent(BuildContext context, Quiz? originalQuiz, int? index) {
     // 플로팅 액션 버튼을 이용하여 항목을 추가할 제목과 내용
     final TextEditingController questionController = TextEditingController();
@@ -84,11 +85,8 @@ class _QuizListWidgetState extends State<QuizListWidget> {
               ),
               actions: <Widget>[
                 TextButton(
-                  child: const Text('취소'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
+                    child: const Text('취소'),
+                    onPressed: () => {Navigator.pop(context)}),
                 TextButton(
                   child: originalQuiz == null
                       ? const Text('추가')
@@ -100,10 +98,10 @@ class _QuizListWidgetState extends State<QuizListWidget> {
                         answer: answerController.text);
 
                     setState(() => originalQuiz == null
-                        ? widget.quizList!.add(newQuiz)
+                        ? widget.quizList.add(newQuiz)
                         : {
-                            widget.quizList!.removeAt(index!),
-                            widget.quizList!.insert(index, newQuiz)
+                            widget.quizList.removeAt(index!),
+                            widget.quizList.insert(index, newQuiz)
                           });
                     Navigator.of(context).pop();
                   },
