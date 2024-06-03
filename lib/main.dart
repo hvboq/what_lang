@@ -87,7 +87,9 @@ class _TabViewState extends State<TabView> with TickerProviderStateMixin {
         physics: const NeverScrollableScrollPhysics(),
         controller: _tabController,
         children: [
-          const QuizWidget(),
+          QuizWidget(
+            quizList: quizList,
+          ),
           QuizListWidget(
             quizList: quizList,
           ),

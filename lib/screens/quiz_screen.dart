@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:what_lang/models/quiz_model.dart';
+import 'package:what_lang/widgets/quiz_card.dart';
 
 class QuizWidget extends StatelessWidget {
-  const QuizWidget({super.key});
+  int index = 0;
+  final List<Quiz> quizList;
+  QuizWidget({required this.quizList, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -10,9 +14,11 @@ class QuizWidget extends StatelessWidget {
         child: const Icon(Icons.info),
         onPressed: () {},
       ),
-      body: const Center(
-        child: Text("Quiz"),
-      ),
+      body: quizList.isEmpty
+          ? const Text('퀴즈가 없어용')
+          : QuizCard(
+              inputQuiz: quizList[index],
+            ),
     );
   }
 }
